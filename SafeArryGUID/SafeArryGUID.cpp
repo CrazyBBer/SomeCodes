@@ -26,16 +26,17 @@ void Put1GuidInSafeArry()
 	GUID guid;
 	CoCreateGuid(&guid);  
 
+	auto guidStri = GuidToString(guid);
 	//TODO... put the guid into safearry..
 	SAFEARRAY* p_safe_arry;
 	SAFEARRAYBOUND safe_arry_bound[1]={0};
-	auto guidsize= sizeof(GUID);
+	auto guidsize= guidStri.size();
 	safe_arry_bound[0].cElements =guidsize;
 	safe_arry_bound[0].lLbound =0;
 
-	p_safe_arry = SafeArrayCreate(VT_CLSID,1,safe_arry_bound);
-	auto pnData = reinterpret_cast<GUID*>(p_safe_arry->pvData);
-	memcpy_s(pnData,guidsize,&guid,guidsize);
+	p_safe_arry = SafeArrayCreate(VT_BSTR,1,safe_arry_bound);
+	auto pnData = reinterpret_cast<char*>(p_safe_arry->pvData);
+	memcpy_s(pnData,guidsize,guidStri.c_str(),guidsize);
 	//TODO...
 	//do something..	
 	SafeArrayDestroy(p_safe_arry);
