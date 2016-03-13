@@ -30,20 +30,20 @@ using namespace AdaptorFactory;
 using namespace ECConnectionManager;
 using namespace VideoAdaptorWrapper;
 //
-//// Import web-service synchronize related libs.
-//#import "HUSCommunicationMsgBase.tlb" named_guids no_namespace
-//#import "SiteImage.tlb" named_guids
-//#import "SiteImageAdaptor.tlb" named_guids
-//#import "SynchronizeClient.tlb" named_guids
-//
-//using namespace SiteImage;
-//using namespace SiteImageAdaptor;
-//using namespace SynchronizeClient;
-//
-//#import "HUS.DataManager.Search.tlb" named_guids
-//#import "HUS.DataManager.Client.Contract.tlb" named_guids
-//#import "HUS.DataManager.Search.Contract.tlb" named_guids
-//
-//using namespace HUS_DataManager_Search;
-//using namespace HUS_DataManager_Client_Contract;
-//using namespace HUS_DataManager_Search_Contract;
+// Import web-service synchronize related libs.
+#import "HUSCommunicationMsgBase.tlb" named_guids no_namespace
+#import "SiteImage.tlb" named_guids
+#import "SiteImageAdaptor.tlb" named_guids
+#import "SynchronizeClient.tlb" named_guids
+
+using namespace SiteImage;
+using namespace SiteImageAdaptor;
+using namespace SynchronizeClient;
+
+#import "HUS.DataManager.Search.tlb" named_guids
+#import "HUS.DataManager.Client.Contract.tlb" named_guids
+#import "HUS.DataManager.Search.Contract.tlb" named_guids
+
+using namespace HUS_DataManager_Search;
+using namespace HUS_DataManager_Client_Contract;
+using namespace HUS_DataManager_Search_Contract;
