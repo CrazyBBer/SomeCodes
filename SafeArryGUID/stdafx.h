@@ -23,12 +23,12 @@ typedef mscorlib::Guid Guid;
 // Import adapter related libs.
 #import "DeviceConfig.tlb" named_guids
 #import "AdaptorFactory.tlb" named_guids
-//#import "VideoAdaptorWrapper.tlb" named_guids
-//#import "ECConnectionManager.tlb" named_guids
-//using namespace DeviceConfig;
-//using namespace AdaptorFactory;
-//using namespace VideoAdaptorWrapper;
-//using namespace ECConnectionManager;
+#import "ECConnectionManager.tlb" named_guids
+#import "VideoAdaptorWrapper.tlb" named_guids
+using namespace DeviceConfig;
+using namespace AdaptorFactory;
+using namespace ECConnectionManager;
+using namespace VideoAdaptorWrapper;
 //
 //// Import web-service synchronize related libs.
 //#import "HUSCommunicationMsgBase.tlb" named_guids no_namespace
