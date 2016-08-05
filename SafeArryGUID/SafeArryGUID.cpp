@@ -5,6 +5,7 @@
 #include <objbase.h>
 #include <string>  
 #include<atlsafe.h>
+#include<iostream>
 using namespace std;
 
 string GuidToString(const GUID &guid)  
@@ -27,14 +28,19 @@ void Put1GuidInSafeArry()
 	CoCreateGuid(&guid);  
 
 	auto guidStri = GuidToString(guid);
+	
+	cout<< guidStri<<endl;
+
 	//TODO... put the guid into safearry..
 	SAFEARRAY* p_safe_arry;
-	SAFEARRAYBOUND safe_arry_bound[1]={0};
-	auto guidsize= guidStri.size();
+	SAFEARRAYBOUND safe_arry_bound[2]={0};
+	auto guidsize= sizeof(GUID);
 	safe_arry_bound[0].cElements =guidsize;
 	safe_arry_bound[0].lLbound =0;
+	safe_arry_bound[1].cElements =guidsize;
+	safe_arry_bound[1].lLbound =0;
 
-	p_safe_arry = SafeArrayCreate(VT_BSTR,1,safe_arry_bound);
+	p_safe_arry = SafeArrayCreate(VT_ARRAY,1,safe_arry_bound);
 	auto pnData = reinterpret_cast<char*>(p_safe_arry->pvData);
 	memcpy_s(pnData,guidsize,guidStri.c_str(),guidsize);
 	//TODO...
@@ -71,8 +77,6 @@ void Put1GuidInSafeArryByStack()
 {
 	GUID guid;
 	
-	CoCreateGuid(&guid);  
-	
 
 	//TODO... put the guid into safearry..
 	SAFEARRAY* pArray=nullptr;
@@ -95,6 +99,23 @@ void CComSafeArrayGUID()
 }
 
 
+void LearnSafeArray()
+{
+	
+	VARIANT var_Chunk;
+	SAFEARRAY *psa;
+	SAFEARRAYBOUND rgsabund[1];
+
+	rgsabund[0].cElements= sizeof(GUID);
+	rgsabund[0].lLbound= 0;
+
+	//psa = SafeArrayCreate(VT_UI1,1,rgsabund);
+
+	var_Chunk.vt = VT_RECORD|VT_ARRAY;
+	var_Chunk.parray =
+
+
+}
 
 int _tmain(int argc, _TCHAR* argv[])
 {
