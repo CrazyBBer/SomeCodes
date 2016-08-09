@@ -3,69 +3,67 @@
 
 #include "stdafx.h"
 #include <objbase.h>
-#include <string>  
+#include <string>
 #include<atlsafe.h>
 #include<iostream>
 using namespace std;
 
-string GuidToString(const GUID &guid)  
-{  
-    char buf[64] = {0};  
-    sprintf_s(buf,sizeof(buf),"{%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}",  
-        guid.Data1, guid.Data2, guid.Data3,  
-        guid.Data4[0], guid.Data4[1],  
-        guid.Data4[2], guid.Data4[3],  
-        guid.Data4[4], guid.Data4[5],  
-        guid.Data4[6], guid.Data4[7]);  
-    return string(buf);  
-} 
-
-
+string GuidToString(const GUID &guid)
+{
+	char buf[64] = { 0 };
+	sprintf_s(buf, sizeof(buf), "{%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}",
+		guid.Data1, guid.Data2, guid.Data3,
+		guid.Data4[0], guid.Data4[1],
+		guid.Data4[2], guid.Data4[3],
+		guid.Data4[4], guid.Data4[5],
+		guid.Data4[6], guid.Data4[7]);
+	return string(buf);
+}
 
 void Put1GuidInSafeArry()
 {
 	GUID guid;
-	CoCreateGuid(&guid);  
+	CoCreateGuid(&guid);
 
 	auto guidStri = GuidToString(guid);
-	
-	cout<< guidStri<<endl;
+
+	cout << guidStri << endl;
 
 	//TODO... put the guid into safearry..
 	SAFEARRAY* p_safe_arry;
-	SAFEARRAYBOUND safe_arry_bound[2]={0};
-	auto guidsize= sizeof(GUID);
-	safe_arry_bound[0].cElements =guidsize;
-	safe_arry_bound[0].lLbound =0;
-	safe_arry_bound[1].cElements =guidsize;
-	safe_arry_bound[1].lLbound =0;
+	SAFEARRAYBOUND safe_arry_bound[2] = { 0 };
+	auto guidsize = sizeof(GUID);
+	safe_arry_bound[0].cElements = guidsize;
+	safe_arry_bound[0].lLbound = 0;
+	safe_arry_bound[1].cElements = guidsize;
+	safe_arry_bound[1].lLbound = 0;
 
-	p_safe_arry = SafeArrayCreate(VT_ARRAY,1,safe_arry_bound);
+	p_safe_arry = SafeArrayCreate(VT_ARRAY, 1, safe_arry_bound);
 	auto pnData = reinterpret_cast<char*>(p_safe_arry->pvData);
-	memcpy_s(pnData,guidsize,guidStri.c_str(),guidsize);
+	memcpy_s(pnData, guidsize, guidStri.c_str(), guidsize);
 	//TODO...
-	//do something..	
+	//do something..
 	SafeArrayDestroy(p_safe_arry);
 }
 
 void Put2GuidInSafeArry()
 {
-		GUID guid,guid2;
-	CoCreateGuid(&guid); 
-	CoCreateGuid(&guid2); 
+	GUID guid, guid2;
+	CoCreateGuid(&guid);
+	CoCreateGuid(&guid2);
 
 	//TODO... put the guid into safearry..
 	SAFEARRAY* p_safe_arry;
-	SAFEARRAYBOUND safe_arry_bound[2]={0};
-	safe_arry_bound[0].cElements =2;
-	safe_arry_bound[0].lLbound =0;
-	safe_arry_bound[1].cElements =16;
-	safe_arry_bound[1].lLbound =0;
+	SAFEARRAYBOUND safe_arry_bound[2] = { 0 };
+	safe_arry_bound[0].cElements = 2;
+	safe_arry_bound[0].lLbound = 0;
+	safe_arry_bound[1].cElements = 16;
+	safe_arry_bound[1].lLbound = 0;
 
-	p_safe_arry = SafeArrayCreate(VT_CLSID,2,safe_arry_bound);
+	p_safe_arry = SafeArrayCreate(VT_CLSID, 2, safe_arry_bound);
 	auto pnData = reinterpret_cast<GUID*>(p_safe_arry->pvData);
-	pnData[0]=guid;
-	pnData[1]=guid2;
+	pnData[0] = guid;
+	pnData[1] = guid2;
 	//TODO...
 	//do something..
 	//TODO...
@@ -76,50 +74,40 @@ void Put2GuidInSafeArry()
 void Put1GuidInSafeArryByStack()
 {
 	GUID guid;
-	
 
 	//TODO... put the guid into safearry..
-	SAFEARRAY* pArray=nullptr;
-	auto hr=SafeArrayAllocDescriptorEx(VT_CLSID,1,&pArray);
-	pArray->cbElements=sizeof(GUID);
-	pArray->rgsabound[0].cElements=1;
-	pArray->rgsabound[0].lLbound=16;
-	pArray->pvData=&guid;
-	pArray->fFeatures=FADF_AUTO;
-	_bstr_t bstr;
+	SAFEARRAY* pArray = nullptr;
+	auto hr = SafeArrayAllocDescriptorEx(VT_CLSID, 1, &pArray);
+	pArray->cbElements = sizeof(GUID);
+	pArray->rgsabound[0].cElements = 1;
+	pArray->rgsabound[0].lLbound = 16;
+	pArray->pvData = &guid;
+	pArray->fFeatures = FADF_AUTO;
+	//_bstr_t bstr;
 }
 
 void CComSafeArrayGUID()
 {
-	
 	//CComSafeArray<GUID> comsafeguid(10);
-
-
-
 }
-
 
 void LearnSafeArray()
 {
-	
 	VARIANT var_Chunk;
 	SAFEARRAY *psa;
 	SAFEARRAYBOUND rgsabund[1];
 
-	rgsabund[0].cElements= sizeof(GUID);
-	rgsabund[0].lLbound= 0;
+	rgsabund[0].cElements = sizeof(GUID);
+	rgsabund[0].lLbound = 0;
 
 	//psa = SafeArrayCreate(VT_UI1,1,rgsabund);
 
-	var_Chunk.vt = VT_RECORD|VT_ARRAY;
-	var_Chunk.parray =
-
-
+	var_Chunk.vt = VT_RECORD | VT_ARRAY;
+	//var_Chunk.parray =
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-
 	Put1GuidInSafeArry();
 	Put1GuidInSafeArry();
 	Put1GuidInSafeArryByStack();

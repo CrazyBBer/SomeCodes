@@ -213,3 +213,5 @@ Libs/
 Debug DLL/
 Release DLL/
 .hg/
+*.db
+*.opendb

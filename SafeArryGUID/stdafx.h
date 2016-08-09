@@ -10,9 +10,9 @@
 #include <stdio.h>
 #include <tchar.h>
 
-
-
 // TODO: reference additional headers your program requires here
+
+/*
 
 // Import .NET framework mscorlib.
 #import "mscorlib.tlb" raw_interfaces_only
@@ -47,3 +47,4 @@ using namespace SynchronizeClient;
 using namespace HUS_DataManager_Search;
 using namespace HUS_DataManager_Client_Contract;
 using namespace HUS_DataManager_Search_Contract;
+*/
