@@ -4,7 +4,8 @@
 #include "stdafx.h"
 #include <objbase.h>
 #include <string>
-#include<atlsafe.h>
+//#include<atlsafe.h>
+//#include<atlcomcli.h>
 #include<iostream>
 using namespace std;
 
@@ -106,8 +107,27 @@ void LearnSafeArray()
 	//var_Chunk.parray =
 }
 
+void TestSafeArry()
+{
+	CComSafeArray<GUID> guid_Array;
+	//GUID guid, guid2;
+	//CoCreateGuid(&guid);
+	//CoCreateGuid(&guid2);
+	//guid_Array.Add(guid);
+	//guid_Array.Add(guid2);
+
+	//auto count = guid_Array.GetCount();
+	//auto demention = guid_Array.GetDimensions();
+	//auto upperbound = guid_Array.GetUpperBound();
+	//auto p_safeArry = &guid_Array;
+	//GUID guid3;
+	//CoCreateGuid(&guid3);
+	//p_safeArry->SetAt(1, guid3);
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
+	TestSafeArry();
 	Put1GuidInSafeArry();
 	Put2GuidInSafeArry();
 	Put1GuidInSafeArryByStack();
