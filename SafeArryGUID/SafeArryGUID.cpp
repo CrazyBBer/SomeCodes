@@ -109,7 +109,7 @@ void LearnSafeArray()
 int _tmain(int argc, _TCHAR* argv[])
 {
 	Put1GuidInSafeArry();
-	Put1GuidInSafeArry();
+	Put2GuidInSafeArry();
 	Put1GuidInSafeArryByStack();
 	return 0;
 }
