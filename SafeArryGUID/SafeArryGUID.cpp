@@ -144,27 +144,32 @@ void LearnSafeArray()
 
 void TestSafeArry()
 {
-	LearnSafeArray();
-	//CComSafeArrayBound bound(2);
-	//CComSafeArray<GUID>  guid_Array;
-	//GUID guid, guid2;
-	//CoCreateGuid(&guid);
-	//CoCreateGuid(&guid2);
-	//guid_Array.Add(guid);
-	//guid_Array.Add(guid2);
+	CComSafeArrayBound bound(2);
+	CComSafeArray<VARIANT>  guid_Array;
+	GUID guid, guid2;
+	CoCreateGuid(&guid);
+	CoCreateGuid(&guid2);
+	CComVariant comVarient = guid;
+	guid_Array.Add(comVarient);
+	comVarient = guid2;
+	guid_Array.Add(comVarient);
 
-	//auto count = guid_Array.GetCount();
-	//auto demention = guid_Array.GetDimensions();
-	//auto upperbound = guid_Array.GetUpperBound();
-	//auto p_safeArry = &guid_Array;
-	//GUID guid3;
-	//CoCreateGuid(&guid3);
-	//p_safeArry->SetAt(1, guid3);
+	auto count = guid_Array.GetCount();
+	auto demention = guid_Array.GetDimensions();
+	auto upperbound = guid_Array.GetUpperBound();
+	auto p_safeArry = &guid_Array;
+	GUID guid3;
+	CoCreateGuid(&guid3);
+	comVarient = guid3;
+	p_safeArry->SetAt(1, comVarient);
+
+	count = guid_Array.GetCount();
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
 	TestSafeArry();
+	//LearnSafeArray();
 	//Put1GuidInSafeArry();
 	Put2GuidInSafeArry();
 	Put1GuidInSafeArryByStack();
