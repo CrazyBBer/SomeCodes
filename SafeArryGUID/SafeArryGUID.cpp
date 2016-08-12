@@ -54,20 +54,33 @@ void Put2GuidInSafeArry()
 
 	//TODO... put the guid into safearry..
 	SAFEARRAY* p_safe_arry;
-	SAFEARRAYBOUND safe_arry_bound[2] = { 0 };
-	safe_arry_bound[0].cElements = 2;
+	SAFEARRAYBOUND safe_arry_bound[1] = { 0 };
+	safe_arry_bound[0].cElements = 5;
 	safe_arry_bound[0].lLbound = 0;
-	safe_arry_bound[1].cElements = 16;
-	safe_arry_bound[1].lLbound = 0;
 
-	p_safe_arry = SafeArrayCreate(VT_CLSID, 2, safe_arry_bound);
-	auto pnData = reinterpret_cast<GUID*>(p_safe_arry->pvData);
-	pnData[0] = guid;
-	pnData[1] = guid2;
-	//TODO...
-	//do something..
-	//TODO...
+	p_safe_arry = SafeArrayCreate(VT_VARIANT, 1, safe_arry_bound);
 
+	long Low(0), High(0);
+	SafeArrayGetLBound(p_safe_arry, 1, &Low);
+	SafeArrayGetUBound(p_safe_arry, 1, &High);
+
+	////p_safe_arry->cbElements = sizeof(GUID);
+	//long lDimension;
+	//lDimension = 0;
+	//SafeArrayPutElement(p_safe_arry, &lDimension, &guid);
+	//lDimension = 1;
+
+	//SafeArrayPutElement(p_safe_arry, &lDimension, &guid2);
+	////TODO...
+	//GUID guidout = { 0 };
+	//SafeArrayGetElement(p_safe_arry, &lDimension, &guidout);
+
+	GUID* pData = NULL;
+	HRESULT hr = SafeArrayAccessData(p_safe_arry, (void**)&pData);
+	pData[0] = guid;
+	pData[1] = guid2;
+	//TODO...
+	SafeArrayUnaccessData(p_safe_arry);
 	SafeArrayDestroy(p_safe_arry);
 }
 
@@ -126,7 +139,7 @@ void LearnSafeArray()
 	SafeArrayUnaccessData(pArray);
 	SafeArrayDestroy(pArray);
 
-	cin.get();
+	//	cin.get();
 }
 
 void TestSafeArry()
@@ -152,7 +165,7 @@ void TestSafeArry()
 int _tmain(int argc, _TCHAR* argv[])
 {
 	TestSafeArry();
-	Put1GuidInSafeArry();
+	//Put1GuidInSafeArry();
 	Put2GuidInSafeArry();
 	Put1GuidInSafeArryByStack();
 	return 0;
