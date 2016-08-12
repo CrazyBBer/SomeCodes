@@ -4,8 +4,7 @@
 #include "stdafx.h"
 #include <objbase.h>
 #include <string>
-//#include<atlsafe.h>
-//#include<atlcomcli.h>
+#include<atlsafe.h>
 #include<iostream>
 using namespace std;
 
@@ -94,22 +93,43 @@ void CComSafeArrayGUID()
 
 void LearnSafeArray()
 {
-	VARIANT var_Chunk;
-	SAFEARRAY *psa;
-	SAFEARRAYBOUND rgsabund[1];
+	SAFEARRAY *pArray = nullptr;
+	HRESULT hr = SafeArrayAllocDescriptor(1, &pArray);//创建SAFEARRAY结构的对象
+	pArray->cbElements = sizeof(GUID);
+	pArray->rgsabound[0].cElements = 10;
+	pArray->rgsabound[0].lLbound = 0;
 
-	rgsabund[0].cElements = sizeof(GUID);
-	rgsabund[0].lLbound = 0;
+	GUID guid, guid2;
+	CoCreateGuid(&guid);
+	CoCreateGuid(&guid2);
+	GUID _guidarr[] = { guid,guid2 };
+	pArray->pvData = _guidarr;
+	pArray->fFeatures = FADF_AUTO | FADF_FIXEDSIZE;
 
-	//psa = SafeArrayCreate(VT_UI1,1,rgsabund);
+	//CComSafeArray<VARIANT> saguid;
+//	saguid.Attach(pArray);
 
-	var_Chunk.vt = VT_RECORD | VT_ARRAY;
-	//var_Chunk.parray =
+	//auto count = saguid.GetCount();
+
+	//auto t = saguid.GetType();
+
+	GUID* p_GUIDArry = nullptr;
+	SafeArrayAccessData(pArray, (PVOID*)&p_GUIDArry);
+
+	auto retv = p_GUIDArry[0];
+	auto retv1 = p_GUIDArry[1];
+
+	long Low(0), High(0);
+	hr = SafeArrayGetLBound(pArray, 1, &Low);//维数索引从1开始
+	hr = SafeArrayGetUBound(pArray, 1, &High);//维数索引从1开始
+	cin.get();
 }
 
 void TestSafeArry()
 {
-	CComSafeArray<GUID> guid_Array;
+	LearnSafeArray();
+	//CComSafeArrayBound bound(2);
+	//CComSafeArray<GUID>  guid_Array;
 	//GUID guid, guid2;
 	//CoCreateGuid(&guid);
 	//CoCreateGuid(&guid2);
