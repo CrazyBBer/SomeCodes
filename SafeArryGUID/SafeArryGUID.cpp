@@ -122,6 +122,10 @@ void LearnSafeArray()
 	long Low(0), High(0);
 	hr = SafeArrayGetLBound(pArray, 1, &Low);//维数索引从1开始
 	hr = SafeArrayGetUBound(pArray, 1, &High);//维数索引从1开始
+
+	SafeArrayUnaccessData(pArray);
+	SafeArrayDestroy(pArray);
+
 	cin.get();
 }
 
