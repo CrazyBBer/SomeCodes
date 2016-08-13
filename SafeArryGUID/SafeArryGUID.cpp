@@ -1,13 +1,14 @@
-// SafeArryGUID.cpp : Defines the entry point for the console application.
+ï»¿// SafeArryGUID.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
-#include <objbase.h>
+//#include <objbase.h>
+//#include <comutil.h>
 #include <string>
 #include<atlsafe.h>
 #include<iostream>
 using namespace std;
-
+#pragma comment(lib, "rpcrt4.lib")
 string GuidToString(const GUID &guid)
 {
 	char buf[64] = { 0 };
@@ -107,7 +108,7 @@ void CComSafeArrayGUID()
 void LearnSafeArray()
 {
 	SAFEARRAY *pArray = nullptr;
-	HRESULT hr = SafeArrayAllocDescriptor(1, &pArray);//´´½¨SAFEARRAY½á¹¹µÄ¶ÔÏó
+	HRESULT hr = SafeArrayAllocDescriptor(1, &pArray);//åˆ›å»ºSAFEARRAYç»“æž„çš„å¯¹è±¡
 	pArray->cbElements = sizeof(GUID);
 	pArray->rgsabound[0].cElements = 10;
 	pArray->rgsabound[0].lLbound = 0;
@@ -133,8 +134,8 @@ void LearnSafeArray()
 	auto retv1 = p_GUIDArry[1];
 
 	long Low(0), High(0);
-	hr = SafeArrayGetLBound(pArray, 1, &Low);//Î¬ÊýË÷Òý´Ó1¿ªÊ¼
-	hr = SafeArrayGetUBound(pArray, 1, &High);//Î¬ÊýË÷Òý´Ó1¿ªÊ¼
+	hr = SafeArrayGetLBound(pArray, 1, &Low);//ç»´æ•°ç´¢å¼•ä»Ž1å¼€å§‹
+	hr = SafeArrayGetUBound(pArray, 1, &High);//ç»´æ•°ç´¢å¼•ä»Ž1å¼€å§‹
 
 	SafeArrayUnaccessData(pArray);
 	SafeArrayDestroy(pArray);
@@ -157,19 +158,84 @@ void TestSafeArry()
 	auto count = guid_Array.GetCount();
 	auto demention = guid_Array.GetDimensions();
 	auto upperbound = guid_Array.GetUpperBound();
-	auto p_safeArry = &guid_Array;
+	auto p_ComSafeArry = &guid_Array;
 	GUID guid3;
 	CoCreateGuid(&guid3);
 	comVarient = guid3;
-	p_safeArry->SetAt(1, comVarient);
+	p_ComSafeArry->SetAt(1, comVarient);
+	count = p_ComSafeArry->GetCount();
 
-	count = guid_Array.GetCount();
+	SAFEARRAY * p_safeArray = nullptr;
+
+	p_safeArray = guid_Array;
+
+	auto cDims = p_safeArray->cDims;
+	auto eleSize = p_safeArray->cbElements;
+
+	VARIANT* p_GUIDArry = nullptr;
+	SafeArrayAccessData(guid_Array.m_psa, (PVOID*)&p_GUIDArry);
+
+	auto retv = guid_Array[0];
+	auto retv1 = p_GUIDArry[1];
+	CComVariant v = guid_Array.m_psa;
+	auto  retguid = reinterpret_cast<GUID*>(&retv.vt);
+	auto guiddata = v.parray;
+	//auto guid1value = p_safeArray->pvData;
+	SafeArrayUnaccessData(guid_Array.m_psa);
 }
 
+void testComSafeArray2()
+{
+	CComSafeArray<VARIANT>  guid_Array;
+	GUID guid, guid2;
+	CoCreateGuid(&guid);
+	CoCreateGuid(&guid2);
+	CComVariant comVarient = guid;
+	GUID emptyGUID;
+	CLSIDFromString(comVarient.bstrVal, &emptyGUID);
+	//GUIDÂ­FromÂ­String(comVarient.bstrVal, &emptyGUID);
+	UUID emtyUUID;
+	UuidFromString(reinterpret_cast<RPC_WSTR>(L"92340005-4980-1920-6788-123456789012"), &emtyUUID);
+
+	RPC_WSTR uuuid = reinterpret_cast<RPC_WSTR>(L"92340005-4980-1920-6788-123456789012");
+
+	guid_Array.Add(comVarient);
+	comVarient = guid2;
+	guid_Array.Add(comVarient);
+
+	auto count = guid_Array.GetCount();
+	auto demention = guid_Array.GetDimensions();
+	auto upperbound = guid_Array.GetUpperBound();
+	auto p_ComSafeArry = &guid_Array;
+	GUID guid3;
+	CoCreateGuid(&guid3);
+	comVarient = guid3;
+	p_ComSafeArry->SetAt(1, comVarient);
+	count = p_ComSafeArry->GetCount();
+
+	SAFEARRAY * p_safeArray = nullptr;
+
+	p_safeArray = guid_Array;
+
+	auto cDims = p_safeArray->cDims;
+	auto eleSize = p_safeArray->cbElements;
+
+	VARIANT* p_GUIDArry = nullptr;
+	SafeArrayAccessData(guid_Array.m_psa, (PVOID*)&p_GUIDArry);
+
+	auto retv = guid_Array[0];
+	auto retv1 = p_GUIDArry[1];
+	CComVariant v = guid_Array.m_psa;
+	auto  retguid = reinterpret_cast<GUID*>(&retv.vt);
+	auto guiddata = v.parray;
+	//auto guid1value = p_safeArray->pvData;
+	SafeArrayUnaccessData(guid_Array.m_psa);
+}
 int _tmain(int argc, _TCHAR* argv[])
 {
 	TestSafeArry();
-	//LearnSafeArray();
+	testComSafeArray2();
+	LearnSafeArray();
 	//Put1GuidInSafeArry();
 	Put2GuidInSafeArry();
 	Put1GuidInSafeArryByStack();
