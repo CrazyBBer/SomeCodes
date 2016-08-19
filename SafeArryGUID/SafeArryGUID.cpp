@@ -243,7 +243,7 @@ void testIrecord()
 	GUID guidStream;
 	CoCreateGuid(&guidStream);
 	CComPtr<IRecordInfo> pRecordInfo = nullptr;
-	auto hr = GetRecordInfoFromGuids(__uuidof(mscorlib::__mscorlib), 4, 6, 0, __uuidof(Guid), &pRecordInfo);
+	auto hr = GetRecordInfoFromGuids(__uuidof(mscorlib::__mscorlib), 2, 0, 0, __uuidof(Guid), &pRecordInfo);
 	_ASSERT(SUCCEEDED(hr) && pRecordInfo);
 	SAFEARRAYBOUND sab = { 1, 0 };
 	SAFEARRAY *isa = SafeArrayCreateEx(VT_RECORD, 1, &sab, pRecordInfo);
