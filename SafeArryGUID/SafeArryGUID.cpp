@@ -9,6 +9,12 @@
 #include<iostream>
 using namespace std;
 #pragma comment(lib, "rpcrt4.lib")
+// Import .NET framework mscorlib. //rename_namespace("NameSpace_new"), rename("GetName","GetNameNEW")
+#import "mscorlib.tlb" raw_interfaces_only rename("ReportEvent","ReportEvent_Sys")
+//using namespace mscorlib;
+typedef mscorlib::_TypePtr _TypePtr;
+typedef mscorlib::Guid Guid;
+
 string GuidToString(const GUID &guid)
 {
 	char buf[64] = { 0 };
@@ -102,7 +108,7 @@ void Put1GuidInSafeArryByStack()
 
 void CComSafeArrayGUID()
 {
-	//CComSafeArray<GUID> comsafeguid(10);
+	CComSafeArray<VARIANT> comsafeguid(10);
 }
 
 void LearnSafeArray()
@@ -231,8 +237,36 @@ void testComSafeArray2()
 	//auto guid1value = p_safeArray->pvData;
 	SafeArrayUnaccessData(guid_Array.m_psa);
 }
+
+void testIrecord()
+{
+	GUID guidStream;
+	CoCreateGuid(&guidStream);
+	CComPtr<IRecordInfo> pRecordInfo = nullptr;
+	auto hr = GetRecordInfoFromGuids(__uuidof(mscorlib::__mscorlib), 4, 6, 0, __uuidof(Guid), &pRecordInfo);
+	_ASSERT(SUCCEEDED(hr) && pRecordInfo);
+	SAFEARRAYBOUND sab = { 1, 0 };
+	SAFEARRAY *isa = SafeArrayCreateEx(VT_RECORD, 1, &sab, pRecordInfo);
+	_ASSERT(isa);
+	GUID *iguid = NULL;
+	hr = SafeArrayAccessData(isa, reinterpret_cast<PVOID*>(&iguid));
+	_ASSERT(SUCCEEDED(hr) && iguid);
+	iguid[0] = guidStream;
+	SafeArrayUnaccessData(isa);
+	//SafeArrayDestroy(isa);
+
+	GUID *oguid = nullptr;
+	SafeArrayAccessData(isa, reinterpret_cast<PVOID*>(&oguid));
+
+	auto resguid = oguid[0];
+	SafeArrayUnaccessData(isa);
+	SafeArrayDestroy(isa);
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
+	testIrecord();
+	CComSafeArrayGUID();
 	TestSafeArry();
 	testComSafeArray2();
 	LearnSafeArray();
